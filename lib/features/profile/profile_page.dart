@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../utils/theme/colors.dart';
+import 'edit_profile_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -10,6 +11,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         title: const Text(
           'Profile',
           style: TextStyle(fontSize: 20, fontFamily: 'inter_semibold'),
@@ -81,9 +83,12 @@ class ProfilePage extends StatelessWidget {
             ),
 
             // Menu Items
-            const ProfileMenuItem(
+            ProfileMenuItem(
               icon: Icons.person_outline,
               title: 'Your profile',
+              onTap: () {
+                _navigateToNextPage(context, () => const EditProfilePage());
+              },
             ),
             const ProfileMenuItem(
               icon: Icons.credit_card_outlined,
@@ -112,13 +117,39 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
+
+  void _navigateToNextPage(BuildContext context, Widget Function() screenBuilder) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => screenBuilder(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+      ),
+    );
+  }
+
 }
 
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final VoidCallback? onTap;
 
-  const ProfileMenuItem({super.key, required this.icon, required this.title});
+  const ProfileMenuItem({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -133,9 +164,8 @@ class ProfileMenuItem extends StatelessWidget {
         ),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: mainColor),
-      onTap: () {
-        // Add navigation or action here
-      },
+      onTap: onTap, // use the passed callback here
     );
   }
 }
+

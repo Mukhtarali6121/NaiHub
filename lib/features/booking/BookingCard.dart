@@ -210,7 +210,7 @@ class BookingCard extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: mainColor,
                         ),
                         child: Text(
                           "View E-Receipt",

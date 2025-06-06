@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nai_hub/features/SalonDetails/salon_details_screen.dart';
+import 'package:nai_hub/features/home/search_page.dart';
 import 'package:nai_hub/features/location/LocationSearchScreen.dart';
 import 'package:nai_hub/utils/theme/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -219,56 +220,73 @@ class _HomeState extends State<Home> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'inter_medium',
-                color: grey_1A1C1E,
-              ),
-              maxLength: 30,
-              autofillHints: null,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.text,
-              textCapitalization: TextCapitalization.sentences,
-              cursorColor: mainColor,
-              decoration: InputDecoration(
-                counterText: "",
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 4),
-                  child: SvgPicture.asset(
-                    "assets/ic_vector_search.svg",
-                    width: 20,
-                    height: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: const Duration(milliseconds: 300),
+                    pageBuilder: (_, __, ___) => SearchPage(),
+                    // your second page
+                    transitionsBuilder: (_, animation, __, child) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(1, 0), // from right to left
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      );
+                    },
                   ),
-                ),
-                prefixIconConstraints: BoxConstraints(
-                  minWidth: 36,
-                  minHeight: 36,
-                ),
-                hintText: "Find your favorite salon",
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'inter_medium',
-                  color: grey_C4CADA,
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 8,
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: mainColor, width: 1),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: Colors.grey.shade400),
+                );
+              },
+              child: AbsorbPointer(
+                child: TextField(
+                  readOnly: true,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'inter_medium',
+                    color: grey_1A1C1E,
+                  ),
+                  decoration: InputDecoration(
+                    // [same decoration as yours]
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 4),
+                      child: SvgPicture.asset(
+                        "assets/ic_vector_search.svg",
+                        width: 20,
+                        height: 20,
+                      ),
+                    ),
+                    prefixIconConstraints: BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    hintText: "Find your favorite salon",
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'inter_medium',
+                      color: grey_C4CADA,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 8,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: mainColor, width: 1),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade400),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -494,7 +512,7 @@ class _HomeState extends State<Home> {
   }
 
   void _navigateToDetailsPage() {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder:
             (context, animation, secondaryAnimation) => SalonDetailsScreen(),

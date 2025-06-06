@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../utils/theme/colors.dart';
 import '../cart/presentation/cart_provider.dart';
 
-
 class ServicesTab extends StatefulWidget {
   const ServicesTab({super.key});
 
@@ -16,29 +15,22 @@ class ServicesTab extends StatefulWidget {
 class _ServicesTabState extends State<ServicesTab> {
   List<ServiceCategory> _serviceCategories = [];
   final List<CartItem> _cartItems = [];
+  final numbers = List.generate(11, (index) => index);
 
   @override
   Widget build(BuildContext context) {
-
-    final cart = Provider.of<CartProvider>(context);
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Column(
               key: const ValueKey('services'),
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'Our Services',
-                    style: TextStyle(fontFamily: 'inter_bold', fontSize: 24),
-                  ),
-                ),
                 _buildServiceMenu(),
-                const SizedBox(height: 80), // Add spacing so content doesn't hide behind cart bar
+                const SizedBox(height: 80),
               ],
             ),
           ),
@@ -51,7 +43,6 @@ class _ServicesTabState extends State<ServicesTab> {
       ),
     );
   }
-
 
   Widget _buildServiceMenu() {
     if (_serviceCategories.isEmpty) {
@@ -66,6 +57,7 @@ class _ServicesTabState extends State<ServicesTab> {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
       itemCount: _serviceCategories.length,
       itemBuilder: (context, index) {
         final category = _serviceCategories[index];
@@ -79,9 +71,12 @@ class _ServicesTabState extends State<ServicesTab> {
                 vertical: 0.0,
               ),
               child: Theme(
-                data: Theme.of(
-                  context,
-                ).copyWith(dividerColor: Colors.transparent),
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent,
+                  listTileTheme: const ListTileThemeData(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 0.0), // remove horizontal padding
+                  ),
+                ),
                 child: ExpansionTile(
                   key: PageStorageKey(category.id),
                   title: Text(
@@ -202,8 +197,8 @@ class _ServicesTabState extends State<ServicesTab> {
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 8.0,
+        horizontal: 5.0,
+        vertical: 4.0,
       ),
       title: Text(
         item.name,
@@ -228,19 +223,20 @@ class _ServicesTabState extends State<ServicesTab> {
         ],
       ),
       trailing: ElevatedButton.icon(
-        icon: inCart
-            ? const Icon(
-          Icons.check_circle_outline,
-          size: 18,
-          color: Colors.white,
-        )
-            : const Icon(Icons.add, color: Colors.white),
+        icon:
+            inCart
+                ? const Icon(
+                  Icons.check_circle_outline,
+                  size: 18,
+                  color: Colors.white,
+                )
+                : const Icon(Icons.add, color: Colors.white),
         label: Text(
           inCart ? 'Added' : 'Add',
           style: TextStyle(
             color: Colors.white,
             fontFamily: inCart ? 'inter_medium' : 'inter_bold',
-            fontSize: inCart ?  14 : 16,
+            fontSize: inCart ? 14 : 16,
           ),
         ),
         style: ElevatedButton.styleFrom(
@@ -248,9 +244,7 @@ class _ServicesTabState extends State<ServicesTab> {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           textStyle: const TextStyle(fontSize: 13),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),
         onPressed: () {
           if (inCart) {

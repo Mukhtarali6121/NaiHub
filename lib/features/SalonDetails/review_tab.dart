@@ -72,11 +72,11 @@ class _ReviewTabState extends State<ReviewTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [_buildReviewsTitle(), _buildAddReviewButton()],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 0),
           _buildSearchBar(),
           // const SizedBox(height: 12),
           // _buildFilterChips(),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           _buildReviewsList(),
         ],
       ),
@@ -195,8 +195,8 @@ class _ReviewTabState extends State<ReviewTab> {
                       Text(
                         review.name,
                         style: const TextStyle(
-                          fontFamily: 'inter_medium',
-                          fontSize: 14,
+                          fontFamily: 'inter_bold',
+                          fontSize: 16,
                         ),
                       ),
                       Row(
@@ -246,7 +246,8 @@ class _ReviewTabState extends State<ReviewTab> {
                                     : review.review),
                         style: const TextStyle(
                           fontFamily: 'inter_medium',
-                          fontSize: 14,
+                          fontSize: 12.5,
+                          color: grey_676763
                         ),
                       ),
                       if (isLongText)
@@ -257,8 +258,8 @@ class _ReviewTabState extends State<ReviewTab> {
                                   : ' Show more',
                           style: TextStyle(
                             color: mainColor,
-                            fontSize: 14,
-                            fontFamily: 'inter_medium',
+                            fontSize: 12.5,
+                            fontFamily: 'inter_semibold',
                           ),
                         ),
                     ],
@@ -269,10 +270,7 @@ class _ReviewTabState extends State<ReviewTab> {
           ),
         ),
         if (showDivider)
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Divider(),
-          ),
+          Divider()
       ],
     );
   }
